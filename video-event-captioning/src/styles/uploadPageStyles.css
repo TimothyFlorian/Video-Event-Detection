@@ -1,0 +1,54 @@
+/* Styles for the UploadPage component */
+
+.upload-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.upload-container input {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.upload-container button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.upload-container button:hover {
+    background-color: #45a049;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.message.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.message.error {
+    background-color: #f44336;
+    color: white;
+}
+
+.loading {
+    margin-top: 20px;
+    font-style: italic;
+    color: #888;
+}
+
+/* Video styles */
+video {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin-top: 20px;
+}
