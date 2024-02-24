@@ -10,6 +10,8 @@ def split_video_into_frames(video_path, output_folder, num_frames=80):
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
     step_size = total_frames // num_frames
+    print(total_frames)
+    print(step_size)
 
     frame_count = 0
     current_frame = 0

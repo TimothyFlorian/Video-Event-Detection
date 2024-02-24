@@ -5,6 +5,8 @@ from transformers import pipeline
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image
 import torchvision.transforms as transforms
+from transformers import BlipProcessor, BlipForConditionalGeneration
+
 
 class ImageDataset(Dataset):
     def __init__(self, img_paths, transform=None):
@@ -31,16 +33,19 @@ transform = transforms.Compose([
     )
 ])
 
-model = pipeline("image-to-text", model="Salesforce/blip-image-captioning-large", device="cuda")
+processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-large")
+model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-large").to("cuda")
 def generate(path, query):
+    path = path
     img_paths = [os.path.join(path, img) for img in os.listdir(path)]
     dataset = ImageDataset(img_paths, transform=transform)
     dataloader = DataLoader(dataset, batch_size=8, shuffle=False)
     texts = []
     for batch_images, batch_paths in dataloader:
-        batch_texts = model([img_path for img_path in batch_paths])
-        for text_dict in batch_texts:
-            generated_text = text_dict[0]['generated_text']
-            print(generated_text)
-            texts.append(generated_text)
+        for img_path in batch_paths:
+            inputs = processor(Image.open(img_path).convert("RGB"), query, return_tensors="pt").to("cuda")
+            out = model.generate(**inputs)
+            text = processor.decode(out[0], skip_special_tokens=True)
+            print(text)
+            texts.append(text)
     return texts
